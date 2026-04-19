@@ -705,6 +705,147 @@ input:checked + .toggle-slider::before {
   100% { background-position: -200% 0; }
 }
 
+/* ── Login Loader ── */
+.login-loader {
+  position: fixed;
+  inset: 0;
+  background: #0d1117;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.loader-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.18;
+  animation: blobFloat 6s ease-in-out infinite alternate;
+}
+
+.loader-blob-1 {
+  width: 420px;
+  height: 420px;
+  background: #3b82f6;
+  top: -80px;
+  left: -80px;
+  animation-delay: 0s;
+}
+
+.loader-blob-2 {
+  width: 340px;
+  height: 340px;
+  background: #8b5cf6;
+  bottom: -60px;
+  right: -60px;
+  animation-delay: -3s;
+}
+
+@keyframes blobFloat {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(30px, 20px) scale(1.08); }
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  z-index: 1;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.loader-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.loader-logo-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 22px;
+  color: white;
+  box-shadow: 0 0 32px rgba(59, 130, 246, 0.35);
+}
+
+.loader-logo-text {
+  font-size: 28px;
+  font-weight: 700;
+  color: #f9fafb;
+  letter-spacing: -0.5px;
+}
+
+.loader-spinner-wrap {
+  position: relative;
+  width: 56px;
+  height: 56px;
+}
+
+.loader-spinner {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #3b82f6;
+  animation: spin 1s linear infinite;
+}
+
+.loader-spinner-2 {
+  inset: 8px;
+  border-top-color: #8b5cf6;
+  animation-duration: 0.7s;
+  animation-direction: reverse;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loader-status {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.loader-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 14px 18px;
+  max-width: 340px;
+  font-size: 13px;
+  color: #9ca3af;
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.loader-tip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.loader-tip-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
 /* ── Auth page ── */
 .auth-page {
   min-height: 100vh;

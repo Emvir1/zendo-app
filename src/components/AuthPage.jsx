@@ -1,8 +1,18 @@
 import { useState } from 'react'
 import { login, register } from '../api'
+import LoginLoader from './LoginLoader'
 
 export default function AuthPage({ onLogin }) {
-  const [mode, setMode] = useState('login') // 'login' | 'register'
+  const [mode,         setMode]         = useState('login')
+  const [loggingIn,    setLoggingIn]    = useState(false)
+
+  function handleLogin(userData) {
+    setLoggingIn(true)
+    // small delay so the loader renders before App re-mounts
+    setTimeout(() => onLogin(userData), 100)
+  }
+
+  if (loggingIn) return <LoginLoader />
 
   return (
     <div className="auth-page">
@@ -30,7 +40,7 @@ export default function AuthPage({ onLogin }) {
         </div>
 
         {mode === 'login'
-          ? <LoginForm onLogin={onLogin} onSwitch={() => setMode('register')} />
+          ? <LoginForm onLogin={handleLogin} onSwitch={() => setMode('register')} />
           : <RegisterForm onSwitch={() => setMode('login')} />
         }
       </div>
