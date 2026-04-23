@@ -3,16 +3,11 @@ import { login, register } from '../api'
 import LoginLoader from './LoginLoader'
 
 export default function AuthPage({ onLogin }) {
-  const [mode,         setMode]         = useState('login')
-  const [loggingIn,    setLoggingIn]    = useState(false)
+  const [mode,      setMode]      = useState('login')
+  const [loading,   setLoading]   = useState(false)
+  const [loginErr,  setLoginErr]  = useState(null)
 
-  function handleLogin(userData) {
-    setLoggingIn(true)
-    // small delay so the loader renders before App re-mounts
-    setTimeout(() => onLogin(userData), 100)
-  }
-
-  if (loggingIn) return <LoginLoader />
+  if (loading) return <LoginLoader />
 
   return (
     <div className="auth-page">
@@ -40,7 +35,7 @@ export default function AuthPage({ onLogin }) {
         </div>
 
         {mode === 'login'
-          ? <LoginForm onLogin={handleLogin} onSwitch={() => setMode('register')} />
+          ? <LoginForm onLogin={onLogin} onLoading={setLoading} onError={setLoginErr} error={loginErr} onSwitch={() => setMode('register')} />
           : <RegisterForm onSwitch={() => setMode('login')} />
         }
       </div>
@@ -50,23 +45,23 @@ export default function AuthPage({ onLogin }) {
 
 // ── Login ─────────────────────────────────────────────────────────────────────
 
-function LoginForm({ onLogin }) {
+function LoginForm({ onLogin, onLoading, onError, error }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [loading,  setLoading]  = useState(false)
-  const [error,    setError]    = useState(null)
+  const [busy,     setBusy]     = useState(false)
 
   async function handleSubmit(e) {
     e.preventDefault()
-    setError(null)
-    setLoading(true)
+    onError(null)
+    setBusy(true)
+    onLoading(true)
     try {
       const data = await login(username, password)
       onLogin(data.user)
     } catch {
-      setError('Invalid username or password.')
-    } finally {
-      setLoading(false)
+      onError('Invalid username or password.')
+      setBusy(false)
+      onLoading(false)
     }
   }
 
@@ -95,8 +90,8 @@ function LoginForm({ onLogin }) {
         required
       />
 
-      <button className="auth-btn" type="submit" disabled={loading}>
-        {loading ? 'Logging in…' : 'Login'}
+      <button className="auth-btn" type="submit" disabled={busy}>
+        {busy ? 'Logging in…' : 'Login'}
       </button>
     </form>
   )
