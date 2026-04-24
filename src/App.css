@@ -705,6 +705,90 @@ input:checked + .toggle-slider::before {
   100% { background-position: -200% 0; }
 }
 
+/* ── Idle Warning Modal ── */
+.idle-overlay {
+  z-index: 9998;
+}
+
+.idle-card {
+  max-width: 380px;
+  text-align: center;
+  padding: 36px 32px;
+}
+
+.idle-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.idle-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+}
+
+.idle-subtitle {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
+.idle-countdown {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 28px;
+}
+
+.idle-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.idle-ring-bg {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 3;
+}
+
+.idle-ring-fill {
+  fill: none;
+  stroke: #3b82f6;
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.idle-time {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.idle-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.idle-btn-logout {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+.idle-btn-logout:hover {
+  background: rgba(239, 68, 68, 0.22);
+}
+
 /* ── Login Loader ── */
 .login-loader {
   position: fixed;

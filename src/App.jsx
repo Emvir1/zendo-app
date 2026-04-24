@@ -5,6 +5,8 @@ import TaskList from './components/TaskList'
 import TaskModal from './components/TaskModal'
 import ProfileModal from './components/ProfileModal'
 import AuthPage from './components/AuthPage'
+import IdleWarningModal from './components/IdleWarningModal'
+import { useIdleTimer } from './hooks/useIdleTimer'
 import { getTasks, getTaskById, createTask, updateTask, deleteTask, updateProfile, logout, getLists, createList, updateList, deleteList } from './api'
 import './App.css'
 
@@ -52,6 +54,7 @@ export default function App() {
   const [sidebarOpen,  setSidebarOpen]  = useState(false)
   const [modalTask,    setModalTask]    = useState(null)
   const [profileOpen,  setProfileOpen]  = useState(false)
+  const [idleWarn,     setIdleWarn]     = useState(false)
 
   // ── Auth handlers ────────────────────────────────────────────────────────────
   function handleLogin(userData) {
@@ -59,12 +62,20 @@ export default function App() {
     setUser(userData)
   }
 
-  function handleLogout() {
+  const handleLogout = useCallback(() => {
     logout()
     localStorage.removeItem('zendo_user')
     setUser(null)
     setTasks([])
-  }
+    setIdleWarn(false)
+  }, [])
+
+  const { reset: resetIdle } = useIdleTimer({
+    onWarn:        () => setIdleWarn(true),
+    onLogout:      handleLogout,
+    warnAfterMs:   8 * 60 * 1000,  // warn after 8 min
+    logoutAfterMs: 2 * 60 * 1000,  // logout 2 min after warning
+  })
 
   // ── Load tasks from Flask (only when logged in) ──────────────────────────────
   const fetchTasks = useCallback(async () => {
@@ -364,6 +375,14 @@ export default function App() {
           user={user}
           onClose={() => setProfileOpen(false)}
           onSave={handleProfileSave}
+        />
+      )}
+
+      {/* Idle warning */}
+      {idleWarn && (
+        <IdleWarningModal
+          onStay={() => { setIdleWarn(false); resetIdle() }}
+          onLogout={handleLogout}
         />
       )}
     </div>
